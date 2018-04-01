@@ -68,10 +68,13 @@ angular.module('cmelo.angularSticky', [])
 
 
 						var diff = scroll_top - offset_top + top;
-						var next_diff = scroll_top + top + height - offset_next;
-						if (next_diff > 0) { diff -= next_diff; }
+            // Breaks in case of <th> where all elements are siblings and share the same offset top
+						// causing only the last child to be sticky
+						// var next_diff = scroll_top + top + height - offset_next;
+						// if (next_diff > 0) { diff -= next_diff; }
 
-						if (sticker.nodeName.toLowerCase() === 'thead') {
+            // Addition here stops the <th> content from continuing to be stuck even though the parent is not
+            if (sticker.nodeName.toLowerCase() === 'thead' || sticker.nodeName.toLowerCase() === 'th') {
 							var parent_diff =  diff + height -
 								sticker.offsetParent.offsetHeight;
 							if (parent_diff > 0) {
